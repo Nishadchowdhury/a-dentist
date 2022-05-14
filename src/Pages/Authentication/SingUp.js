@@ -1,66 +1,80 @@
-import React, { useEffect } from 'react';
-import auth from '../../firebase.init';
-import { useAuthState, useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import React from 'react';
+import { useAuthState, useCreateUserWithEmailAndPassword, useSignInWithGoogle, useUpdateProfile } from 'react-firebase-hooks/auth';
 import { useForm } from "react-hook-form";
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import auth from '../../firebase.init';
+import Loading from '../Shared/Loading';
 
 
-const LoginByEmail = () => {
-    const [user] = useAuthState(auth);
+const SingUp = () => {
+
+    const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
+    const [updateProfile, updating, errorUpdate] = useUpdateProfile(auth);
+    const [signInWithGoogle, userG, loadingG, errorG] = useSignInWithGoogle(auth);
 
     const navigate = useNavigate();
-    const location = useLocation();
 
-    let from = location.state?.from?.pathname || "/";
-
-    const [signInWithGoogle, userG, loading_G, error_G] = useSignInWithGoogle(auth);
+    const [userok] = useAuthState(auth);
 
     let errorMessage;
 
     const { register, formState: { errors }, handleSubmit } = useForm();
 
-    const [
-        signInWithEmailAndPassword,
-        userEmail,
-        loading_Email,
-        error_Email,
-    ] = useSignInWithEmailAndPassword(auth);
-
-    useEffect(() => {
-
-        if (user || userG) {
-            navigate(from, { replace: true });
-        }
-
-    }, [user, userG, from, navigate])
-
-    const onSubmit = data => {
-        signInWithEmailAndPassword(data.email, data.password);
-
+    const onSubmit = async data => {
+        console.log(data);
+        await createUserWithEmailAndPassword(data.email, data.password);
+        await updateProfile({ displayName: data.name });
+        navigate('/appointment');
     }
 
 
-    if (loading_Email || loading_G) {
-        return <button className="btn btn-square loading w-full h-screen "></button>
+    if (loading) {
+        return <Loading />
     }
 
-    if (error_Email || error_G) {
-        errorMessage = <p className='text-red-500 text-xs' > {error_Email?.message || error_G?.message} </p>
+    if (error || errorG || errorUpdate) {
+        errorMessage = <p className='text-red-500 text-xs' > {error?.message || errorUpdate?.message || errorG?.message} </p>
     }
 
 
-    // if (userG || userEmail) {
-    //     console.log(userG?.user?.displayName || userEmail?.user?.displayName);
-    // }
+
+    console.dir(userok || 'no');
 
     return (
         <section className='flex flex-col justify-center items-center h-screen pb-16'>
 
             <div className=" w-96 bg-base-100 shadow-xl">
                 <div className="card-body">
-                    <h2 className="text-center text-2xl font-bold ">Login</h2>
+                    <h2 className="text-center text-2xl font-bold ">SignUp</h2>
 
                     <form onSubmit={handleSubmit(onSubmit)}>
+
+                        <div>
+                            <label className="label">
+                                <span className="label-text">Your Name</span>
+                            </label>
+                            <input
+                                type="text" placeholder="Type here"
+                                className="input input-bordered w-full max-w-xs"
+                                {...register("name", {
+                                    required: {
+                                        value: true,
+                                        message: 'Name is Required'
+                                    }/* ,
+                                    pattern: {
+                                        value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
+                                        message: 'Provide a valid Email'
+                                    } */
+                                })} />
+                            <label className="label">
+
+                                {errors.name?.type === 'required' && <span className="label-text-alt text-red-500">{errors.name.message}</span>}
+                                {/* {errors.email?.type === 'pattern' && <span className="label-text-alt text-red-500">{errors.email.message}</span>} */}
+
+                            </label>
+                        </div>
+
+
 
                         <div>
                             <label className="label">
@@ -86,6 +100,7 @@ const LoginByEmail = () => {
 
                             </label>
                         </div>
+
 
 
 
@@ -118,16 +133,13 @@ const LoginByEmail = () => {
                         </div>
 
 
-
-                        <p>forget password ?</p>
-
                         <div className='flex justify-center' >
-                            <input className="btn  block w-full  mt-3 mx-auto text-white " type="submit" value="login" />
+                            <input className="btn  block w-full  mt-3 mx-auto text-white " type="submit" value="SingUp" />
                         </div>
                     </form>
 
                     <div>
-                        <p className="text-center font-normal font-sans text-xs mt-1  " > New to Doctor Portal ? <Link to="/signup" className='text-primary ' > Create New Account </Link> </p>
+                        <p className="text-center font-normal font-sans text-xs mt-1  " > ALready have an account? <Link to="/login" className='text-primary ' > Please Login </Link> </p>
                     </div>
 
 
@@ -146,4 +158,4 @@ const LoginByEmail = () => {
     );
 };
 
-export default LoginByEmail;
+export default SingUp;

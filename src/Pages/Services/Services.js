@@ -24,7 +24,8 @@ const Services = () => {
             <div className='flex lg:flex-row flex-col justify-center items-center  gap-4 mb-[154px]' >
 
                 {
-                    datas.map(data =>
+                    datas.map((data, i) =>
+
 
                         <div className="card card-compact w-96 bg-base-100 shadow-xl">
                             <figure><img src={data.img} alt="Shoes" /></figure>
