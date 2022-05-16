@@ -3,6 +3,8 @@ import auth from '../../firebase.init';
 import { useAuthState, useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import Loading from '../Shared/Loading';
+import useToken from '../../Hooks/useToken';
 
 
 const LoginByEmail = () => {
@@ -15,6 +17,7 @@ const LoginByEmail = () => {
 
     const [signInWithGoogle, userG, loading_G, error_G] = useSignInWithGoogle(auth);
 
+
     let errorMessage;
 
     const { register, formState: { errors }, handleSubmit } = useForm();
@@ -26,13 +29,15 @@ const LoginByEmail = () => {
         error_Email,
     ] = useSignInWithEmailAndPassword(auth);
 
+    const [token] = useToken(userG || userEmail);
+
     useEffect(() => {
 
-        if (user || userG) {
+        if (token) {
             navigate(from, { replace: true });
         }
 
-    }, [user, userG, from, navigate])
+    }, [user, userG, userEmail, token, from, navigate])
 
     const onSubmit = data => {
         signInWithEmailAndPassword(data.email, data.password);
@@ -41,13 +46,12 @@ const LoginByEmail = () => {
 
 
     if (loading_Email || loading_G) {
-        return <button className="btn btn-square loading w-full h-screen "></button>
+        return <Loading />
     }
 
     if (error_Email || error_G) {
         errorMessage = <p className='text-red-500 text-xs' > {error_Email?.message || error_G?.message} </p>
     }
-
 
     // if (userG || userEmail) {
     //     console.log(userG?.user?.displayName || userEmail?.user?.displayName);
@@ -121,6 +125,9 @@ const LoginByEmail = () => {
 
                         <p>forget password ?</p>
 
+                        {error_Email && errorMessage}
+
+
                         <div className='flex justify-center' >
                             <input className="btn  block w-full  mt-3 mx-auto text-white " type="submit" value="login" />
                         </div>
@@ -136,7 +143,7 @@ const LoginByEmail = () => {
 
                     <button onClick={() => signInWithGoogle()} className="btn btn-outline">Continue With Google </button>
 
-                    {errorMessage}
+                    {error_G && errorMessage}
 
 
                 </div>

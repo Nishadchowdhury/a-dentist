@@ -1,7 +1,7 @@
 import { signOut } from 'firebase/auth';
 import React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import auth from '../../firebase.init';
 
 
@@ -9,18 +9,27 @@ const Navbar = () => {
 
     const [user] = useAuthState(auth);
 
+    const logOut = () => {
+        signOut(auth);
+        localStorage.removeItem('accessToken')
+    }
+
     const menuItems =
         <>
-            <li><Link to='/' className='' >Home</Link></li>
-            <li><Link to='/about' className='' >About</Link></li>
-            <li><Link to='/appointment' className='' >Appointment</Link></li>
-            <li><Link to='/reviews' className='' >Reviews</Link></li>
-            <li><Link to='/contact' className='' >Contact Us</Link></li>
-            {!user ? <li><Link to='/login' className='' >Login</Link></li> : <button className='' onClick={() => signOut(auth)} > Log Out </button>}
+            <li><NavLink to='/' className='' >Home</NavLink></li>
+            <li><NavLink to='/about' className='' >About</NavLink></li>
+            <li><NavLink to='/appointment' className='' >Appointment</NavLink></li>
+            <li><NavLink to='/reviews' className='' >Reviews</NavLink></li>
+            <li><NavLink to='/contact' className='' >Contact</NavLink></li>
+            {/* <label htmlFor="dashboard-sidebar" className="btn btn-primary drawer-button lg:hidden">Open drawer</label> */}
+
+            {user && <li><NavLink to='/dashboard' className='' >Dashboard</NavLink></li>}
+
+            {!user ? <li><NavLink to='/login' className='' >Login</NavLink></li> : <button className='' onClick={logOut} > Log Out </button>}
         </>
 
     return (
-        <div className="navbar lg:justify-center bg-base-100 mx-auto  z-[999]">
+        <div className="navbar px-4 lg:justify-center bg-base-100 mx-auto  z-[999]">
             <div className="navbar-start">
                 <div className="dropdown">
                     <label tabIndex="0" className="btn btn-ghost lg:hidden">
@@ -31,7 +40,15 @@ const Navbar = () => {
                         {menuItems}
                     </ul>
                 </div>
-                <Link to='/' className="btn btn-ghost normal-case text-xl">Doctors Portal</Link>
+                <NavLink to='/' className="btn btn-ghost normal-case text-xl">Doctors Portal</NavLink>
+            </div>
+            <div className="navbar-end">
+                {/* <label className="btn btn-primary drawer-button lg:hidden">Dashboard</label> */}
+
+                <label htmlFor="dashboard-sidebar" className="btn btn-ghost lg:hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+                </label>
+
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal p-0">

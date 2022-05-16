@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = () => {
     return (
-        <div className=" lg:bg-[url('/src/assets/images/bg.png')]  " >
+        <div className=" lg:bg-[url('/src/assets/images/footer.png')]  " >
             <footer className="footer p-10 h-[405]  text-neutral-content">
                 <div>
                     <span className="footer-title text-black ">Services</span>

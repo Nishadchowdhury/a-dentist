@@ -7,6 +7,14 @@ import RequireAuth from "./Pages/Authentication/RequreAuth";
 import SingUp from "./Pages/Authentication/SingUp";
 import Home from "./Pages/Home/Home";
 import Navbar from './Pages/Shared/Navbar';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import Dashboard from "./Pages/Dashboard/Dashboard";
+import MyAppointment from "./Pages/Dashboard/MyAppointment";
+import MyReview from "./Pages/Dashboard/MyReview";
+import MyHistory from "./Pages/Dashboard/MyHistory";
+import User from "./Pages/Dashboard/User";
+import RequireAdmin from "./Pages/Authentication/RequireAdmin";
 
 function App() {
   return (
@@ -25,6 +33,15 @@ function App() {
           </RequireAuth>
         } />
 
+        <Route path='/dashboard' element={<RequireAuth> <Dashboard /> </RequireAuth>} >
+
+          <Route index element={<MyAppointment></MyAppointment>} ></Route> {/*  nested Routes */}
+          <Route path="review" element={<MyReview></MyReview>} ></Route>   {/*  nested Routes */}
+          <Route path="history" element={<MyHistory />} ></Route>          {/*  nested Routes */}
+          <Route path="users" element={<RequireAdmin>  <User /> </RequireAdmin>} ></Route>{/*  nested Routes */}
+
+        </Route>
+
         <Route path='/signup' element={<SingUp />} />
 
 
@@ -34,7 +51,7 @@ function App() {
 
       </Routes>
 
-
+      <ToastContainer />
     </div>
   )
 }

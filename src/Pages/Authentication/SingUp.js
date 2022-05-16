@@ -3,6 +3,7 @@ import { useAuthState, useCreateUserWithEmailAndPassword, useSignInWithGoogle, u
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
+import useToken from '../../Hooks/useToken';
 import Loading from '../Shared/Loading';
 
 
@@ -11,6 +12,8 @@ const SingUp = () => {
     const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
     const [updateProfile, updating, errorUpdate] = useUpdateProfile(auth);
     const [signInWithGoogle, userG, loadingG, errorG] = useSignInWithGoogle(auth);
+
+    const [token] = useToken(user || userG);
 
     const navigate = useNavigate();
 
@@ -24,8 +27,8 @@ const SingUp = () => {
         console.log(data);
         await createUserWithEmailAndPassword(data.email, data.password);
         await updateProfile({ displayName: data.name });
-        navigate('/appointment');
     }
+
 
 
     if (loading) {
@@ -36,9 +39,11 @@ const SingUp = () => {
         errorMessage = <p className='text-red-500 text-xs' > {error?.message || errorUpdate?.message || errorG?.message} </p>
     }
 
+    if (token) {
 
+        navigate('/appointment');
+    }
 
-    console.dir(userok || 'no');
 
     return (
         <section className='flex flex-col justify-center items-center h-screen pb-16'>
@@ -81,6 +86,7 @@ const SingUp = () => {
                                 <span className="label-text">Your Email</span>
                             </label>
                             <input
+
                                 type="email" placeholder="Type here"
                                 className="input input-bordered w-full max-w-xs"
                                 {...register("email", {
@@ -109,6 +115,7 @@ const SingUp = () => {
                                 <span className="label-text">Password</span>
                             </label>
                             <input
+
                                 type="password"
                                 placeholder="Password"
                                 className="input input-bordered w-full max-w-xs"
