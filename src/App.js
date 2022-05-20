@@ -15,6 +15,9 @@ import MyReview from "./Pages/Dashboard/MyReview";
 import MyHistory from "./Pages/Dashboard/MyHistory";
 import User from "./Pages/Dashboard/User";
 import RequireAdmin from "./Pages/Authentication/RequireAdmin";
+import AddDoctor from "./Pages/Dashboard/AddDoctor";
+import ManageDoctors from "./Pages/Dashboard/ManageDoctors";
+import Payment from "./Pages/Dashboard/Payment";
 
 function App() {
   return (
@@ -35,10 +38,13 @@ function App() {
 
         <Route path='/dashboard' element={<RequireAuth> <Dashboard /> </RequireAuth>} >
 
-          <Route index element={<MyAppointment></MyAppointment>} ></Route> {/*  nested Routes */}
-          <Route path="review" element={<MyReview></MyReview>} ></Route>   {/*  nested Routes */}
-          <Route path="history" element={<MyHistory />} ></Route>          {/*  nested Routes */}
-          <Route path="users" element={<RequireAdmin>  <User /> </RequireAdmin>} ></Route>{/*  nested Routes */}
+          <Route index element={<MyAppointment></MyAppointment>} ></Route>
+          <Route path="review" element={<MyReview></MyReview>} ></Route>
+          <Route path="history" element={<MyHistory />} ></Route>
+          <Route path="payment/:id" element={<Payment />} ></Route>
+          <Route path="users" element={<RequireAdmin>  <User /> </RequireAdmin>} ></Route>
+          <Route path="addDoctor" element={<RequireAdmin>  <AddDoctor /> </RequireAdmin>} ></Route>
+          <Route path="manageDr" element={<RequireAdmin>  <ManageDoctors /> </RequireAdmin>} ></Route>{/*  nested Routes */}
 
         </Route>
 

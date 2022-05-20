@@ -21,12 +21,6 @@ const AvailableAppointments = ({ date }) => {
         return <div className='h-full' > <Loading /></div>
     }
 
-    // useEffect(() => {
-    //     fetch(`https://doctors-portal-by-nishad.herokuapp.com/available?date=${formatedData}`)
-    //         .then(res => res.json())
-    //         .then(data => setServices(data))
-    // }, [formatedData])
-
     return (
         <div className='px-12' >
             <p className='font-sans font-normal text-xl text-primary text-center mt-4' > Available Appointments on {toDay}</p>

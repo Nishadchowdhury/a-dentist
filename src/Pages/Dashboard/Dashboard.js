@@ -24,7 +24,12 @@ const Dashboard = () => {
                     <li><Link to='/dashboard' className='font-sans font-normal text-xs' >My Appointments</Link></li>
                     <li><Link to='/dashboard/review' className='font-sans font-normal text-xs' >My Reviews</Link></li>
                     <li><Link to='/dashboard/history' className='font-sans font-normal text-xs' >My History</Link></li>
-                    {admin && <li><Link to='/dashboard/users' className='font-sans font-normal text-xs' >All Users</Link></li>}
+                    {admin && <>
+                        <li><Link to='/dashboard/users' className='font-sans font-normal text-xs' >All Users</Link></li>
+                        <li><Link to='/dashboard/addDoctor' className='font-sans font-normal text-xs' >Add a Doctor</Link></li>
+                        <li><Link to='/dashboard/manageDr' className='font-sans font-normal text-xs' >Manage Dr</Link></li>
+                    </>
+                    }
                 </ul>
 
             </div>

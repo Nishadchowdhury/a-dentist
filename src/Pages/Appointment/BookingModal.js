@@ -10,7 +10,7 @@ const BookingModal = ({ treatment, date, setTreatment, refetch }) => {
     const formatedDate = format(date, 'PP');
 
 
-    const { name, slots, _id } = treatment;
+    const { name, slots, _id, price } = treatment;
     const handleBooking = e => {
         e.preventDefault();
 
@@ -24,6 +24,7 @@ const BookingModal = ({ treatment, date, setTreatment, refetch }) => {
             patientEmail: user.email,
             patientName: user.displayName,
             phone: e.target.phone.value,
+            price,
         }
 
         fetch('https://doctors-portal-by-nishad.herokuapp.com/booking', {

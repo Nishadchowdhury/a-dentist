@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import MainGradiantBtn from '../Shared/MainGradiantBtn';
 
 const Service = ({ service, setTreatment }) => {
-    const { name, slots, } = service;
+    const { name, slots, price } = service;
 
 
     return (
@@ -17,6 +17,7 @@ const Service = ({ service, setTreatment }) => {
                 </p>
 
                 <p className=' font-sans font-normal text-xs text-center'  >{slots.length} {slots.length > 1 ? 'Spaces' : 'Space'}  Available</p>
+                <p className='text-center' ><small> Price: {price} </small></p>
                 <div className="card-actions justify-center">
                     {/* <MainGradiantBtn > Book Appointment </MainGradiantBtn> */}
 

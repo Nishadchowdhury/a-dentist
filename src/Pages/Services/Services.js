@@ -27,7 +27,7 @@ const Services = () => {
                     datas.map((data, i) =>
 
 
-                        <div className="card card-compact w-96 bg-base-100 shadow-xl">
+                        <div key={i} className="card card-compact w-96 bg-base-100 shadow-xl">
                             <figure><img src={data.img} alt="Shoes" /></figure>
                             <div className="card-body text-center ">
                                 <h2 className="">{data.title}</h2>
