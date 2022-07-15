@@ -9,11 +9,13 @@ const AddDoctor = () => {
 
     const { data: services, isLoading } = useQuery('doctorServicesName', () => fetch('https://doctors-portal-by-nishad.herokuapp.com/doctorServicesName').then(res => res.json()))
 
-    const imageStorageKey = '3e71ee8402adb8ecc47756f4a172b7ea';
+    
 
     const onSubmit = async data => {
         console.log('data', data);
 
+
+        const imageStorageKey = '3e71ee8402adb8ecc47756f4a172b7ea';
         const image = data.image[0];
         const formData = new FormData();
         formData.append('image', image)
